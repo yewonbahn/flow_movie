@@ -1,61 +1,25 @@
-import React, { Fragment } from "react";
-import axios from "axios";
-import Movie from "./Movie";
+import React from "react";
+
+import {HashRouter,Route} from "react-router-dom";
+import About from "./routes/About"
+import Home from "./routes/Home"
+import Detail from "./routes/Detail"
+import Navigaton from './components/Navigation'
 import "./App.css";
-class App extends React.Component {
-  state = {
-    isLoading: true,
-    movies: []
-  };
-  getMovies = async () => {
-    const {
-      data: {
-        data: { movies }
-      }
-    } = await axios.get(
-      "https://yts-proxy.now.sh/list_movies.json?sort_by=rating"
-    );
-    this.setState({ movies, isLoading: false });
-  };
-  componentDidMount() {
-    this.getMovies();
-  }
-  render() {
-    const { isLoading, movies } = this.state;
-    return (
+function App(){
+  return <HashRouter>
+    <Navigaton/>
+
+    <Route path="/" exact={true} component={Home}>
       
-      <section className="container">
-       
-        {isLoading ? (
+    </Route>
+    <Route path="/about" component={About}>
+     
+    </Route>
+    <Route path="/movie/:id" component={Detail}>
+     
+    </Route>
+  </HashRouter>
 
-
-          <div className="loader">
-            <span className="loader__text">Loading...</span>
-          </div>
-        ) : (
-          <Fragment>
-            <div className="head">
-              <h1><center>Movie list</center></h1>
-            </div>
-          <div className="movies">
-           
-            
-            {movies.map(movie => (
-              
-              <Movie
-                key={movie.id}
-                id={movie.id}
-                year={movie.year}
-                title={movie.title}
-                summary={movie.summary}
-                poster={movie.medium_cover_image}
-                genres={movie.genres}
-              />
-            ))}
-          </div></Fragment>
-        )}
-      </section>
-    );
-  }
 }
-export default App;                   
+export default App;
